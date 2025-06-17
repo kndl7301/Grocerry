@@ -15,6 +15,9 @@ import MyOrders from './pages/MyOrders'
 import ContactUs from './pages/ContactUs'
 import AboutUs from './pages/AboutUs'
 import AdminRoute from './pages/AdminRoute';
+import SearchResults from './pages/SearchResults';
+
+
 
 function App() {
   return (
@@ -28,6 +31,7 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/categories" element={<Categories />} />
+        <Route path="/search" element={<SearchResults />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} />
 
         {/* Admin sayfalarını koruma altına al */}

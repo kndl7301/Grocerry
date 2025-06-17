@@ -303,6 +303,19 @@ app.get('/api/orders/user/:email', async (req, res) => {
   }
 });
 
+// search product
+app.get('/api/products/search', async (req, res) => {
+  const q = req.query.q;
+  try {
+    const regex = new RegExp(q, 'i'); // case-insensitive
+    const results = await Product.find({ name: { $regex: regex } });
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
+
 // === Users ===
 app.get('/api/users', async (req, res) => {
   try {

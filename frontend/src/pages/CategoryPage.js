@@ -242,7 +242,7 @@ export default function CategoryPage() {
                 boxShadow: '0 0 5px rgba(0,0,0,0.2)',
               }}
             >
-              <FaPlus size={20} color="black" />
+              <strong><FaPlus size={20} color="black" /></strong>
             </button>
           ) : (
             <span
