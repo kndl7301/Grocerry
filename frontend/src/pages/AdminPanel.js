@@ -45,6 +45,7 @@ import axios from "axios";
 import moment from "moment";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./AdminPanel.css";
+import TopSearches from "./TopSearches";
 
 function AdminPanel() {
   const [dashboardData, setDashboardData] = useState({
@@ -483,6 +484,9 @@ function AdminPanel() {
                 <br />
               </Col>
 
+
+              <h2 className="text-center">Most Searched Products && Words ın the Grocerry</h2>
+            <TopSearches />
               {/* Line Chart */}
               {/* Line Chart */}
               <Col md={12}>

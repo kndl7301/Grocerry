@@ -16,6 +16,7 @@ import ContactUs from './pages/ContactUs'
 import AboutUs from './pages/AboutUs'
 import AdminRoute from './pages/AdminRoute';
 import SearchResults from './pages/SearchResults';
+import TopSearches from './pages/TopSearches'
 
 
 
@@ -32,6 +33,8 @@ function App() {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/TopSearches" element={<TopSearches />} />
+        
         <Route path="/category/:categoryName" element={<CategoryPage />} />
 
         {/* Admin sayfalarını koruma altına al */}
