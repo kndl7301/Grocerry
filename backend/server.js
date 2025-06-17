@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const app = express();
 
-// === Middleware ===
 app.use(express.json());
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
@@ -62,16 +61,91 @@ const orderSchema = new Schema({
   email: { type: String, required: true },
   status: { type: String, required: true }
 });
+const SearchQuerySchema = new mongoose.Schema({
+  term: { type: String, required: true },
+  count: { type: Number, default: 1 },
+});
 
+// === Middleware ===
 // === Models ===
 const Category = mongoose.model('categories', categorySchema);
 const Product = mongoose.model('products', productSchema);
 const Message = mongoose.model('messages', messageSchema);
 const User = mongoose.model('users', userSchema);
 const Order = mongoose.model('orders', orderSchema);
+const SearchQuery = mongoose.model('searchqueries', SearchQuerySchema);
 
 // === Auth ===
 app.use('/api/auth', require('./routes/auth'));
+
+// Arama rotası - Ürünleri arar ve arama terimini kaydeder/aritmetik artırır
+app.get('/api/products/search', async (req, res) => {
+  const { q } = req.query;
+  if (!q) return res.status(400).json({ error: 'Query is required' });
+
+  try {
+    // Ürünleri isimde arama (büyük/küçük harf duyarsız)
+    const products = await Product.find({
+      name: { $regex: q, $options: 'i' }
+    });
+
+    const term = q.toLowerCase();
+
+    // Daha önce arandı mı kontrol et
+    const existing = await SearchQuery.findOne({ term });
+
+    if (existing) {
+      existing.count += 1;  // varsa sayacı artır
+      await existing.save();
+    } else {
+      await SearchQuery.create({ term });  // yoksa yeni kayıt oluştur
+    }
+
+    res.json(products);
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
+// En çok aranan kelime (tek, en çok aranan)
+app.get('/api/products/top-search', async (req, res) => {
+  try {
+    const top = await SearchQuery.find().sort({ count: -1 }).limit(1);
+    res.json(top[0] || { term: 'No data yet', count: 0 });
+  } catch (err) {
+    console.error('Top search error:', err);
+    res.status(500).json({ error: 'Top search failed' });
+  }
+});
+
+// En çok aranan kelimeler top 10 - ve ürün ismi ile döner
+app.get('/api/search/top', async (req, res) => {
+  try {
+    const topTerms = await SearchQuery.aggregate([
+      { $group: { _id: "$term", count: { $sum: "$count" } } },  // burası önemli
+      { $sort: { count: -1 } },
+      { $limit: 10 }
+    ]);
+
+    const result = await Promise.all(
+      topTerms.map(async (item) => {
+        const product = await Product.findOne({ name: new RegExp(`^${item._id}$`, 'i') });
+        return {
+          isim: product ? product.name : item._id,
+          count: item.count
+        };
+      })
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Sunucu hatası' });
+  }
+});
+
+
 
 // === Login ===
 app.post('/api/login', async (req, res) => {

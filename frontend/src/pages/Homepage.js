@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -37,6 +39,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -204,9 +207,7 @@ export default function Home() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  window.location.href = `/search?query=${encodeURIComponent(
-                    searchTerm.trim()
-                  )}`;
+                  navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
                 }
               }}
               style={{ borderRadius: "20px 0 0 20px", padding: "10px 20px" }}
@@ -221,9 +222,7 @@ export default function Home() {
               }}
               onClick={() => {
                 if (searchTerm.trim()) {
-                  window.location.href = `/search?query=${encodeURIComponent(
-                    searchTerm.trim()
-                  )}`;
+                  navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
                 }
               }}
             >
