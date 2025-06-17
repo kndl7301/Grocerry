@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "react-router-dom": "^7.5.3"
+  "name": "grocerry",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && npm install && npm start"
   }
 }
