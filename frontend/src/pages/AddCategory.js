@@ -13,7 +13,8 @@ function AddCategory() {
   const [status, setStatus] = useState('active'); // New status state
   const [message, setMessage] = useState(null);
 
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
 
   const handleAddCategory = async (e) => {
     e.preventDefault();

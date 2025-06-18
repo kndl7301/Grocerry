@@ -13,13 +13,16 @@ import {
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
+
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
 function Users() {
   const [users, setUsers] = useState([]); // ✅ correctly named state
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users");
+        const response = await axios.get(`${BASE_URL}/api/users`);
         console.log("Fetched messages:", response.data);
         setUsers(response.data);
       } catch (error) {

@@ -12,6 +12,7 @@ import {
 import { MdBorderColor } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
 function Messages() {
   const [messages, setMessages] = useState([]); // ✅ correctly named state
@@ -19,7 +20,7 @@ function Messages() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/messages");
+        const response = await axios.get(`${BASE_URL}/api/messages`);
         console.log("Fetched messages:", response.data);
         setMessages(response.data);
       } catch (error) {

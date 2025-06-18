@@ -16,7 +16,8 @@ function AddProduct() {
   const [price, setPrice] = useState('');
   const [categories, setCategories] = useState([]);
 
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
 
   // Fetch categories on component mount
   useEffect(() => {

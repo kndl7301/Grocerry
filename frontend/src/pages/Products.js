@@ -13,7 +13,8 @@ function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showConfirmDelete, setShowConfirmDelete] = useState(false); // ✅
   const [productToDelete, setProductToDelete] = useState(null); // ✅
-  const BASE_URL = "http://localhost:5000";
+
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
   useEffect(() => {
     const fetchProducts = async () => {
