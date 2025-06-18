@@ -78,6 +78,10 @@ const User = mongoose.model("users", userSchema);
 const Order = mongoose.model("orders", orderSchema);
 const SearchQuery = mongoose.model("searchqueries", SearchQuerySchema);
 
+app.get("/", (req, res) => {
+  res.send("Backend is live ✅");
+});
+
 // === Auth ===
 app.use("/api/auth", require("./routes/auth"));
 
