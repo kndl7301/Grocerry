@@ -13,7 +13,8 @@ function Categories() {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
 
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
 
   useEffect(() => {
     const fetchCategories = async () => {

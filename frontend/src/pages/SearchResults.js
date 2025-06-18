@@ -4,6 +4,8 @@ import { FaUser } from 'react-icons/fa';
 import { MdBorderColor, MdLogout } from 'react-icons/md';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 export default function SearchResults() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ export default function SearchResults() {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/search?q=${query}`);
+        const response = await fetch(`${BASE_URL}/api/products/search?q=${query}`);
         const data = await response.json();
         setResults(data);
       } catch (err) {

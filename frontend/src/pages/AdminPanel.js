@@ -61,7 +61,8 @@ function AdminPanel() {
   const [salesData, setSalesData] = useState([]);
   const [products, setProducts] = useState([]);
   const [newUserData, setNewUserData] = useState([]);
-  const BASE_URL = "http://localhost:5000";
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
   const COLORS = [
     "#28a745",
     "#fd7e14",
@@ -82,7 +83,7 @@ function AdminPanel() {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products/lowstock")
+    fetch(`${BASE_URL}/api/products/lowstock`)
       .then((res) => res.json())
       .then((data) => setLowStockProducts(data))
       .catch((err) => console.error("Error fetching stock data:", err));

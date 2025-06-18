@@ -34,6 +34,7 @@ const features = [
     description: "At Groceryy, you can choose from thousands of varieties.",
   },
 ];
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
@@ -44,7 +45,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/categories");
+        const response = await fetch(`${BASE_URL}/api/categories`);
         const data = await response.json();
         setCategories(data);
       } catch (error) {

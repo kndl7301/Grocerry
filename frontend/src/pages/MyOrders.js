@@ -5,6 +5,7 @@ import { FaUser } from 'react-icons/fa';
 import { MdBorderColor, MdLogout } from "react-icons/md";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import 'bootstrap/dist/css/bootstrap.min.css';
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -23,7 +24,7 @@ const MyOrders = () => {
     const fetchOrders = async () => {
       try {
         const encodedEmail = encodeURIComponent(email);
-        const response = await axios.get(`http://localhost:5000/api/orders/user/${encodedEmail}`);
+        const response = await axios.get(`${BASE_URL}/api/orders/user/${encodedEmail}`);
         setOrders(response.data);
       } catch (err) {
         console.error('Error fetching orders:', err);

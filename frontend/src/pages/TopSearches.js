@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 function TopSearchesTable() {
   const [topTerms, setTopTerms] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/search/top')
+    axios.get(`${BASE_URL}/api/search/top`)
       .then(res => setTopTerms(res.data))
       .catch(err => console.error(err));
   }, []);

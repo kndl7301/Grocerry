@@ -15,11 +15,11 @@ export default function CategoryPage() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   
-
+  const baseURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/categories');
+        const response = await fetch(`${baseURL}/api/categories`);
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -29,7 +29,7 @@ export default function CategoryPage() {
 
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products?category=${categoryName}`);
+        const response = await fetch(`${baseURL}/api/products?category=${categoryName}`);
         const data = await response.json();
         setProducts(data);
       } catch (error) {
@@ -111,7 +111,7 @@ export default function CategoryPage() {
           status: "pending"
         };
   
-        const response = await fetch('http://localhost:5000/api/orders', {
+        const response = await fetch(`${baseURL}/api/orders`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(order),
@@ -121,7 +121,7 @@ export default function CategoryPage() {
         if (data.success) {
           // 🔽 Stok güncelle
           for (const item of basketItems) {
-            await axios.put(`http://localhost:5000/api/products/${item._id}/stock`, {
+            await axios.put(`${baseURL}/api/products/${item._id}/stock`, {
               stock: item.stock - item.quantity
             });
           }

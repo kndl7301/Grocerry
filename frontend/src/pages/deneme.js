@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaExclamationTriangle, FaExclamationCircle } from "react-icons/fa";
 
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
+
 const AdminPanel = () => {
   const [lowStockProducts, setLowStockProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${BASE_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => setLowStockProducts(data))
       .catch((err) => console.error("Error fetching stock data:", err));

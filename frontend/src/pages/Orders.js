@@ -6,13 +6,15 @@ import { FaCheckCircle, FaTimesCircle, FaUsers, FaUser, FaUserPlus, FaRegListAlt
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 
+
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [alert, setAlert] = useState({ show: false, message: "", variant: "" });
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/orders");
+      const response = await axios.get(`${BASE_URL}/api/orders`);
       console.log("Fetched orders:", response.data);
       setOrders(response.data);
     } catch (error) {

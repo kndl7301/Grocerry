@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import '../index.css';
 
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 export default function Register() {
   const [form, setForm] = useState({
     name: '',
@@ -28,7 +29,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/register', form);
+      const res = await axios.post(`${BASE_URL}/api/register`, form);
       setMessage({ type: 'success', text: res.data.message || 'You have successfully registered! You can now login to Groceryy.' });
       setForm({ name: '', email: '', password: '', phone: '', address: '' });
     } catch (err) {

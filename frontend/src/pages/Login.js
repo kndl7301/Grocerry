@@ -8,6 +8,8 @@ import {
   FaWineBottle, FaCookieBite, FaHamburger, FaCartPlus, FaTv, FaSoap, FaFish, FaCheese, FaShoppingBasket, FaStore, FaUtensils,
 } from 'react-icons/fa';
 import '../index.css';
+const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
 
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -32,7 +34,7 @@ export default function Login() {
       navigate('/home');
     } else {
       try {
-        const res = await axios.post('http://localhost:5000/api/login', form); // Adjust the URL to match your backend
+        const res = await axios.post(`${BASE_URL}/api/login`, form); // Adjust the URL to match your backend
         if (res.data.success) {
           setMessage(res.data.message); // Show success message
           localStorage.setItem('isLoggedIn', 'true');
