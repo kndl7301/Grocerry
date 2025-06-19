@@ -1,17 +1,14 @@
 import { useNavigate } from "react-router-dom";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FaUser,
-  FaUserCog,
   FaSearch,
   FaTwitter,
   FaInstagram,
   FaFacebook,
 } from "react-icons/fa";
-import { MdBorderColor } from "react-icons/md";
-import { MdLogout } from "react-icons/md";
+import { MdBorderColor, MdLogout } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const features = [
@@ -34,13 +31,15 @@ const features = [
     description: "At Groceryy, you can choose from thousands of varieties.",
   },
 ];
-const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+
+const BASE_URL =
+  process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
 export default function Home() {
   const [categories, setCategories] = useState([]);
   const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,7 +55,6 @@ export default function Home() {
     const fetchUser = () => {
       try {
         const storedUser = localStorage.getItem("user");
-
         if (
           !storedUser ||
           storedUser === "undefined" ||
@@ -65,10 +63,7 @@ export default function Home() {
           setUser(null);
           return;
         }
-
-        const parsedUser = JSON.parse(storedUser);
-        console.log("Parsed user:", parsedUser); // Check structure
-        setUser(parsedUser);
+        setUser(JSON.parse(storedUser));
       } catch (error) {
         console.error("Error parsing user data:", error);
         setUser(null);
@@ -82,6 +77,7 @@ export default function Home() {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    navigate("/login");
   };
 
   return (
@@ -100,9 +96,13 @@ export default function Home() {
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
               <li className="nav-item">
@@ -116,90 +116,87 @@ export default function Home() {
                 </Link>
               </li>
             </ul>
+          </div>
 
-            <div className="d-flex gap-3 align-items-center">
-              {user ? (
-                <>
-                  <h5 className="nav-link fw-bold mb-0">
-                    Hello, {user?.user?.name || user?.name || "User"}
-                  </h5>
+          {/* Sağ tarafta butonlar (her zaman görünür) */}
+          <div className="d-flex gap-2 align-items-center ms-auto">
+            {user ? (
+              <>
+                <span className="fw-bold d-none d-md-block">
+                  Hello, {user?.user?.name || user?.name || "User"}
+                </span>
 
-                  <Link
-                    to=""
-                    className="nav-link d-flex align-items-center gap-2 fw-bold"
-                    title={`Settings (${user.name})`}
-                  >
-                    {" "}
-                  </Link>
-
-                  <Link to="/myorders" className="text-decoration-none">
-                    <button className="btn btn-success d-flex align-items-center gap-2 fw-bold">
-                      <MdBorderColor /> My Orders{" "}
-                    </button>
-                  </Link>
-                  <Link to="/login" className="text-decoration-none">
-                    <button
-                      onClick={handleLogout}
-                      className="btn btn-danger d-flex align-items-center gap-2 fw-bold"
-                    >
-                      <MdLogout /> Logout{" "}
-                    </button>
-                  </Link>
-                </>
-              ) : (
                 <Link
-                  to="/login"
-                  className="nav-link d-flex align-items-center gap-2 fw-bold"
+                  to="/myorders"
+                  className="btn btn-success btn-sm d-flex align-items-center gap-1"
                 >
-                  <FaUser /> Login
+                  <MdBorderColor /> My Orders
                 </Link>
-              )}
-            </div>
+
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                >
+                  <MdLogout /> Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
+              >
+                <FaUser /> Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
       <div
-        className="d-flex flex-column flex-md-row align-items-center"
+        className="d-flex flex-column flex-md-row align-items-center justify-content-center text-center"
         style={{
           backgroundColor: "#d1d4ff",
-          height: "70vh",
+          minHeight: window.innerWidth < 768 ? "auto" : "20vh",
           marginTop: "60px",
-          padding: "0 5%",
-          textAlign: "center",
+          padding: "2rem 1rem 3rem",
         }}
       >
-        <div className="d-flex flex-column mb-4 mb-md-0 me-md-5">
+        <div className="mb-4 mb-md-0 me-md-5">
           <img
             src="/groceryy-logo.png"
             alt="Groceryy Logo"
-            style={{ width: "250px", height: "250px", borderRadius: "80px" }}
+            style={{
+              width: window.innerWidth < 768 ? "150px" : "200px",
+              height: window.innerWidth < 768 ? "150px" : "200px",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
           />
           <br />
-          <span style={{ fontWeight: "bold", fontSize: "25px" }}>
+          <span
+            style={{
+              fontWeight: "bold",
+              fontSize: window.innerWidth < 768 ? "18px" : "20px",
+            }}
+          >
             The address of shopping
           </span>
         </div>
-
-        <div
-          className="d-flex flex-column align-items-center"
-          style={{ marginLeft: "350px" }}
-        >
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "700", color: "#333" }}>
+        <div className="d-flex flex-column align-items-center px-3 px-md-5">
+          <h1
+            className="fw-bold text-dark mb-2"
+            style={{ fontSize: window.innerWidth < 768 ? "1.8rem" : "2.5rem" }}
+          >
             Freshness at your doorstep
           </h1>
           <p
-            style={{
-              fontSize: "1.2rem",
-              marginTop: "10px",
-              marginBottom: "30px",
-              color: "#555",
-            }}
+            className="text-muted mb-3"
+            style={{ fontSize: window.innerWidth < 768 ? "1rem" : "1.2rem" }}
           >
             What are you looking for today?
           </p>
-          <div className="input-group" style={{ maxWidth: "400px" }}>
+          <div className="input-group w-100" style={{ maxWidth: "400px" }}>
             <input
               type="text"
               className="form-control"
@@ -208,7 +205,9 @@ export default function Home() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+                  navigate(
+                    `/search?query=${encodeURIComponent(searchTerm.trim())}`
+                  );
                 }
               }}
               style={{ borderRadius: "20px 0 0 20px", padding: "10px 20px" }}
@@ -223,7 +222,9 @@ export default function Home() {
               }}
               onClick={() => {
                 if (searchTerm.trim()) {
-                  navigate(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+                  navigate(
+                    `/search?query=${encodeURIComponent(searchTerm.trim())}`
+                  );
                 }
               }}
             >
@@ -235,15 +236,13 @@ export default function Home() {
 
       {/* Categories Section */}
       <div className="container my-5">
-        <h2 className="fw-bold mb-4" style={{ fontSize: "2.2rem" }}>
-          Categories
-        </h2>
-        <div className="row g-4">
+        <h2 className="fw-bold mb-4 text-center text-md-start">Categories</h2>
+        <div className="row g-4 justify-content-center">
           {categories.length > 0 ? (
             categories
               .filter((cat) => cat.category_name && cat.status === "active")
               .map((cat, index) => (
-                <div key={index} className="col-md-2">
+                <div key={index} className="col-6 col-sm-4 col-md-3 col-lg-2">
                   <Link
                     to={`/category/${cat.category_name
                       .toLowerCase()
@@ -252,11 +251,7 @@ export default function Home() {
                   >
                     <div
                       className="card shadow-sm"
-                      style={{
-                        borderRadius: "20px",
-                        height: "150px",
-                        width: "172px",
-                      }}
+                      style={{ borderRadius: "20px" }}
                     >
                       <img
                         src={cat.image}
@@ -264,17 +259,13 @@ export default function Home() {
                         alt={cat.category_name}
                         style={{
                           height: "100px",
-                          width: "170px",
                           objectFit: "cover",
                           borderTopLeftRadius: "20px",
                           borderTopRightRadius: "20px",
                         }}
                       />
                       <div className="card-body text-center">
-                        <h5
-                          className="card-title fw-bold"
-                          style={{ color: "#333" }}
-                        >
+                        <h5 className="card-title fw-bold">
                           {cat.category_name}
                         </h5>
                       </div>
@@ -306,17 +297,16 @@ export default function Home() {
                     boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   }}
                 >
-                  <figure style={{ marginBottom: "20px" }}>
-                    <img
-                      src={feature.img}
-                      alt={feature.alt}
-                      style={{
-                        width: "160px",
-                        height: "150px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  </figure>
+                  <img
+                    src={feature.img}
+                    alt={feature.alt}
+                    style={{
+                      width: "160px",
+                      height: "150px",
+                      borderRadius: "50%",
+                      marginBottom: "20px",
+                    }}
+                  />
                   <h5 className="fw-bold mb-2">{feature.title}</h5>
                   <p style={{ fontSize: "14px", color: "#555" }}>
                     {feature.description}
@@ -354,105 +344,78 @@ export default function Home() {
         style={{ backgroundColor: "#f2f2f2", padding: "40px 0" }}
       >
         <div className="container">
-          <div className="row">
+          <div className="row text-center text-md-start">
             <div className="col-md-3 mb-4">
               <h5 className="mb-3">Download Our App!</h5>
-              <a href="#">
-                <img
-                  src="/apple.png"
-                  alt="App Store"
-                  style={{ width: "170px", borderRadius: "10px" }}
-                />
-              </a>
-              <br />
-              <br />
-              <a href="#">
-                <img
-                  src="/playstore.png"
-                  alt="Google Play"
-                  style={{ width: "170px", borderRadius: "10px" }}
-                />
-              </a>
-              <br />
-              <br />
-              <a href="#">
-                <img
-                  src="/appgallery.png"
-                  alt="App Gallery"
-                  style={{ width: "170px", borderRadius: "10px" }}
-                />
-              </a>
+              {["/apple.png", "/playstore.png", "/appgallery.png"].map(
+                (img, i) => (
+                  <div key={i} className="mb-2">
+                    <a href="#">
+                      <img
+                        src={img}
+                        alt="App Link"
+                        style={{ width: "170px", borderRadius: "10px" }}
+                      />
+                    </a>
+                  </div>
+                )
+              )}
             </div>
 
-            <div className="col-md-3 mb-4">
-              <h5 className="mb-3">About Grocery</h5>
-              <ul className="list-unstyled">
-                <li>
-                  <a href="#">About Us</a>
-                </li>
-                <li>
-                  <a href="#">Careers</a>
-                </li>
-                <li>
-                  <a href="#">Contact Us</a>
-                </li>
-                <li>
-                  <a href="#">Social Responsibility</a>
-                </li>
-                <li>
-                  <a href="#">Press Releases</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-md-3 mb-4">
-              <h5 className="mb-3">Need Help?</h5>
-              <ul className="list-unstyled">
-                <li>
-                  <a href="#">FAQ</a>
-                </li>
-                <li>
-                  <a href="#">Privacy Policy</a>
-                </li>
-                <li>
-                  <a href="#">Terms & Conditions</a>
-                </li>
-                <li>
-                  <a href="#">Cookie Policy</a>
-                </li>
-                <li>
-                  <a href="#">Process Guide</a>
-                </li>
-              </ul>
-            </div>
-
-            <div className="col-md-3 mb-4">
-              <h5 className="mb-3">Become Our Partner</h5>
-              <ul className="list-unstyled">
-                <li>
-                  <a href="#">Become a Partner</a>
-                </li>
-                <li>
-                  <a href="#">Rent Your Store</a>
-                </li>
-                <li>
-                  <a href="#">Restaurant Partner</a>
-                </li>
-              </ul>
-            </div>
+            {[
+              {
+                title: "About Grocery",
+                links: [
+                  "About Us",
+                  "Careers",
+                  "Contact Us",
+                  "Social Responsibility",
+                  "Press Releases",
+                ],
+              },
+              {
+                title: "Need Help?",
+                links: [
+                  "FAQ",
+                  "Privacy Policy",
+                  "Terms & Conditions",
+                  "Cookie Policy",
+                  "Process Guide",
+                ],
+              },
+              {
+                title: "Become Our Partner",
+                links: [
+                  "Become a Partner",
+                  "Rent Your Store",
+                  "Restaurant Partner",
+                ],
+              },
+            ].map((col, index) => (
+              <div key={index} className="col-md-3 mb-4">
+                <h5 className="mb-3">{col.title}</h5>
+                <ul className="list-unstyled">
+                  {col.links.map((link, idx) => (
+                    <li key={idx}>
+                      <a href="#">{link}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
 
           <hr />
-          <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
             <span>© 2025 Groceryy</span>
-            <div className="d-flex gap-3">
-              <a href="https://facebook.com" target="_blank">
+            <div className="d-flex gap-3 mt-3 mt-md-0">
+              <a href="https://facebook.com" target="_blank" rel="noreferrer">
                 <FaFacebook size={30} />
               </a>
-              <a href="https://instagram.com" target="_blank">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer">
                 <FaInstagram size={30} />
               </a>
-              <a href="https://twitter.com" target="_blank">
+              <a href="https://twitter.com" target="_blank" rel="noreferrer">
                 <FaTwitter size={30} />
               </a>
             </div>
