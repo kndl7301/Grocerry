@@ -482,14 +482,15 @@ app.post("/api/messages", async (req, res) => {
 });
 
 // === Serve Frontend ===
-if (process.env.NODE_ENV === "production") {
-  // Serve static files from the 'frontend/build' directory
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  // For any other GET request that hasn't been handled by API routes or static files,
-  // serve the index.html file (for single-page applications)
-  app.get("/*splat", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
+if (process.env.NODE_ENV === "production") {
+  const frontendPath = path.join(__dirname, "../frontend/build");
+
+  app.use(express.static(frontendPath));
+
+  // ÇALIŞAN wildcard:
+  app.get("/*anything", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
@@ -498,3 +499,4 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
+
