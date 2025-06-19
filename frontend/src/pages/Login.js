@@ -31,7 +31,7 @@ export default function Login() {
       localStorage.setItem('isAdmin', 'true');
       
       localStorage.setItem('user', JSON.stringify(adminUser)); // Store the mock admin user
-      navigate('/home');
+      navigate('/AdminPanel');
     } else {
       try {
         const res = await axios.post(`${BASE_URL}/api/login`, form); // Adjust the URL to match your backend
