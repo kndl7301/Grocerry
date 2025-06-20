@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Card } from "react-bootstrap";
 
-
 import {
   FaUsers,
   FaUserPlus,
@@ -61,7 +60,8 @@ function AdminPanel() {
   const [salesData, setSalesData] = useState([]);
   const [products, setProducts] = useState([]);
   const [newUserData, setNewUserData] = useState([]);
-  const BASE_URL = process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
+  const BASE_URL =
+    process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
 
   const COLORS = [
     "#28a745",
@@ -78,9 +78,7 @@ function AdminPanel() {
     "#00b894",
   ];
   const [lowStockProducts, setLowStockProducts] = useState([]);
-                            const criticalThreshold = 5;
-
-
+  const criticalThreshold = 5;
 
   useEffect(() => {
     fetch(`${BASE_URL}/api/products/lowstock`)
@@ -182,47 +180,44 @@ function AdminPanel() {
     <div className="admin-wrapper">
       {/* Navbar */}
       <nav
-        className="navbar navbar-expand-lg fixed-top"
-        style={{ backgroundColor: "#ebe6a0" }}
+  className="navbar fixed-top"
+  style={{ backgroundColor: "#ebe6a0" }}
+>
+  <div className="container d-flex flex-wrap justify-content-between align-items-center">
+    <Link to="/home" className="navbar-brand fw-bold fs-3">
+      <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
+    </Link>
+
+    <ul className="navbar-nav d-flex flex-row gap-3 mb-0">
+      <li className="nav-item">
+        <Link to="/Products" className="nav-link fw-bold">
+          Products
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/Categories" className="nav-link fw-bold">
+          Categories
+        </Link>
+      </li>
+    </ul>
+
+    <div className="d-flex gap-3 align-items-center">
+      <Link
+        to="/login"
+        className="nav-link d-flex align-items-center gap-2 fw-bold"
       >
-        <div className="container">
-          <Link to="/home" className="navbar-brand fw-bold fs-3">
-            <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
-          </Link>
-          <div className="collapse navbar-collapse">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
-              <h4>
-                <li className="nav-item" style={{ marginLeft: "350px" }}>
-                  <Link to="/Products" className="nav-link fw-bold">
-                    Products
-                  </Link>
-                </li>
-              </h4>
-              <h4>
-                <li className="nav-item">
-                  <Link to="/Categories" className="nav-link fw-bold">
-                    Categories
-                  </Link>
-                </li>
-              </h4>
-            </ul>
-            <div className="d-flex gap-3 align-items-center">
-              <Link
-                to="/login"
-                className="nav-link d-flex align-items-center gap-2 fw-bold"
-              >
-                <FaUsers color="#17a2b8" /> Login
-              </Link>
-              <Link
-                to="/register"
-                className="nav-link d-flex align-items-center gap-2 fw-bold"
-              >
-                <FaUserPlus color="#28a745" /> Register
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+        <FaUsers color="#17a2b8" /> Login
+      </Link>
+      <Link
+        to="/register"
+        className="nav-link d-flex align-items-center gap-2 fw-bold"
+      >
+        <FaUserPlus color="#28a745" /> Register
+      </Link>
+    </div>
+  </div>
+</nav>
+
 
       <br />
       <br />
@@ -287,36 +282,43 @@ function AdminPanel() {
                   icon: <FaBoxOpen size={40} color="#007bff" />,
                   label: "Products",
                   value: dashboardData.products,
+                  to: "/products",
                 },
                 {
                   icon: <FaRegListAlt size={40} color="#6c757d" />,
                   label: "Categories",
                   value: dashboardData.categories,
+                  to: "/categories",
                 },
                 {
                   icon: <FaEnvelope size={40} color="#dc3545" />,
                   label: "Messages",
                   value: dashboardData.messages,
+                  to: "/messages",
                 },
                 {
                   icon: <FaUsers size={40} color="#ffc107" />,
                   label: "Users",
                   value: dashboardData.users,
+                  to: "/users",
                 },
                 {
                   icon: <MdBorderColor size={40} color="#770ec0" />,
                   label: "Total Orders",
                   value: dashboardData.orders,
+                  to: "/orders",
                 },
                 {
                   icon: <FaShippingFast size={40} color="#fd7e14" />,
                   label: "Pending Orders",
                   value: dashboardData.pendingOrders,
+                  to: "/orders",
                 },
                 {
                   icon: <FaCheckCircle size={40} color="#28a745" />,
                   label: "Delivered Orders",
                   value: dashboardData.deliveredOrders,
+                  to: "/orders",
                 },
                 {
                   icon: <FaDollarSign size={40} color="#0400cc" />,
@@ -325,13 +327,19 @@ function AdminPanel() {
                 },
               ].map((item, idx) => (
                 <Col md={3} sm={6} xs={12} key={idx}>
-                  <Card className="text-center mb-4">
-                    <Card.Body>
-                      {item.icon}
-                      <h4 className="mt-2">{item.label}</h4>
-                      <p>{item.value}</p>
-                    </Card.Body>
-                  </Card>
+                  <Link
+                    to={item.to}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    {" "}
+                    <Card className="text-center mb-4">
+                      <Card.Body>
+                        {" "}
+                        {item.icon} <h3 className="mt-2">{item.label}</h3>
+                        <p>{item.value}</p>
+                      </Card.Body>
+                    </Card>
+                  </Link>
                 </Col>
               ))}
 
@@ -351,7 +359,7 @@ function AdminPanel() {
                         (sum, entry) => sum + entry.value,
                         0
                       );
-                      const percent = (( value / total) * 100).toFixed(1);
+                      const percent = ((value / total) * 100).toFixed(1);
                       return `${name}: ${percent}%`;
                     }}
                   >
@@ -421,73 +429,72 @@ function AdminPanel() {
                 </ResponsiveContainer>
               </Col>
               <Col>
-              <div className="container mt-4">
-  <h2>Low Stock Products</h2>
-  {lowStockProducts.length === 0 ? (
-    <p>No products with low stock.</p>
-  ) : (
-    <table className="table table-bordered mt-3">
-      <thead className="thead-dark">
-        <tr>
-          <th>#</th>
-          <th>Product Name</th>
-          <th>Stock</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {lowStockProducts.map((product, index) => {
-          const stock = product.stock;
-          const isOutOfStock = stock === 0;
-          const isCritical = stock > 0 && stock <= 5;
+                <div className="container mt-4">
+                  <h2>Low Stock Products</h2>
+                  {lowStockProducts.length === 0 ? (
+                    <p>No products with low stock.</p>
+                  ) : (
+                    <table className="table table-bordered mt-3">
+                      <thead className="thead-dark">
+                        <tr>
+                          <th>#</th>
+                          <th>Product Name</th>
+                          <th>Stock</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {lowStockProducts.map((product, index) => {
+                          const stock = product.stock;
+                          const isOutOfStock = stock === 0;
+                          const isCritical = stock > 0 && stock <= 5;
 
-          return (
-            <tr key={product._id}>
-              <td>{index + 1}</td>
-              <td>{product.name}</td>
-              <td>{product.stock}</td>
-              <td
-  className={
-    isOutOfStock
-      ? "text-danger fw-bold"          // Red and bold (Bootstrap danger)
-      : isCritical
-      ? "text-warning "          // Custom orange and bold
-      : "text-success "          // Custom green and bold
-  }
->
-  {isOutOfStock ? (
-    <>
-      <FaExclamationCircle className="me-1" />
-      Out of Stock! Please restock this product
-    </>
-  ) : isCritical ? (
-    <>
-      <FaExclamationTriangle className="me-1" />
-      Critical Stock
-    </>
-  ) : (
-    <>
-      <FaCheckCircle className="me-1" />
-      Low Stock
-    </>
-  )}
-</td>
-
-
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  )}
-</div>
+                          return (
+                            <tr key={product._id}>
+                              <td>{index + 1}</td>
+                              <td>{product.name}</td>
+                              <td>{product.stock}</td>
+                              <td
+                                className={
+                                  isOutOfStock
+                                    ? "text-danger fw-bold" // Red and bold (Bootstrap danger)
+                                    : isCritical
+                                    ? "text-warning " // Custom orange and bold
+                                    : "text-success " // Custom green and bold
+                                }
+                              >
+                                {isOutOfStock ? (
+                                  <>
+                                    <FaExclamationCircle className="me-1" />
+                                    Out of Stock! Please restock this product
+                                  </>
+                                ) : isCritical ? (
+                                  <>
+                                    <FaExclamationTriangle className="me-1" />
+                                    Critical Stock
+                                  </>
+                                ) : (
+                                  <>
+                                    <FaCheckCircle className="me-1" />
+                                    Low Stock
+                                  </>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
 
                 <br />
               </Col>
 
-
-              <h2 className="text-center">Most Searched Products && Words ın the Grocerry</h2>
-            <TopSearches />
+              <h2 className="text-center">
+                Most Searched Products && Words ın the Grocerry
+              </h2>
+              <TopSearches />
               {/* Line Chart */}
               {/* Line Chart */}
               <Col md={12}>

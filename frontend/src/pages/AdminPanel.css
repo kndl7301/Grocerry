@@ -70,7 +70,8 @@
   
   .sidebar .links a h3 {
     margin-left: 10px;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: bold;
   }
   
   /* Dashboard */
@@ -118,5 +119,33 @@
   .card-body .icon {
     font-size: 2rem;
     margin-bottom: 15px;
+  }
+  
+  .navbar .container {
+    flex-wrap: nowrap;
+  }
+  
+  /* Mobilde container sarması ve öğeler alt alta */
+  @media (max-width: 768px) {
+    .navbar .container {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .navbar-nav {
+      justify-content: center !important;
+      width: 100%;
+    }
+    
+    .navbar-nav .nav-item {
+      margin: 0 10px;
+    }
+    
+    .d-flex.gap-3 {
+      justify-content: center;
+      width: 100%;
+      margin-top: 10px;
+    }
   }
   

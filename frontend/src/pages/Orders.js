@@ -14,6 +14,9 @@ import {
 } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import { FaFileExcel } from "react-icons/fa";
 
 const BASE_URL =
   process.env.REACT_APP_API_URL || "https://grocerry-rkt8.onrender.com";
@@ -34,6 +37,20 @@ function Orders() {
   useEffect(() => {
     fetchOrders();
   }, []);
+
+  const handleExportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      orders.map(({ _id, ...order }) => order) // _id hariç tüm veriler
+    );
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(data, "Orders.xlsx");
+  };
 
   const handleMarkDelivered = async (orderId) => {
     try {
@@ -174,7 +191,17 @@ function Orders() {
         </div>
         <div className="dashboard">
           <Container>
-            <h2 className="text-center mb-4">Orders</h2>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+              <h1 className="mb-0 align-items-center "style={{marginLeft:"13em"}} >Orders</h1>
+              <Button
+                variant="success"
+                className="d-flex align-items-center"
+                onClick={handleExportToExcel}
+              >
+                <FaFileExcel className="me-2" />
+                Download Excel
+              </Button>
+            </div>
 
             {/* Bootstrap Alert */}
             {alert.show && (
