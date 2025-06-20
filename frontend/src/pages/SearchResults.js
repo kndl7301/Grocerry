@@ -90,12 +90,12 @@ export default function SearchResults() {
             <MdBorderColor /> My Orders
           </Link>
 
-          <button
+         <Link to="/login">   <button
             onClick={handleLogout}
             className="btn btn-danger btn-sm d-flex align-items-center gap-1"
           >
-            <MdLogout /> Logout
-          </button>
+         <MdLogout /> Logout
+          </button></Link> 
         </>
       ) : (
         <Link
