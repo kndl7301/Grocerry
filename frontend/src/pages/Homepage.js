@@ -84,80 +84,69 @@ export default function Home() {
     <div style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Navbar */}
       <nav
-        className="navbar navbar-expand-lg fixed-top"
-        style={{ backgroundColor: "#ebe6a0" }}
-      >
-        <div className="container">
-          <Link to="/home" className="navbar-brand fw-bold fs-3">
-            <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+  className="navbar fixed-top"
+  style={{ backgroundColor: "#ebe6a0" }}
+>
+  <div className="container d-flex flex-wrap justify-content-between align-items-center">
+    <Link to="/home" className="navbar-brand fw-bold fs-3">
+      <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
+    </Link>
+
+    {/* Menü linkleri her zaman görünür */}
+    <ul className="navbar-nav d-flex flex-row gap-3 mb-0">
+      <li className="nav-item">
+        <Link to="/about" className="nav-link fw-bold">
+          About Us
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/contact" className="nav-link fw-bold">
+          Contact
+        </Link>
+      </li>
+    </ul>
+
+    {/* Sağdaki butonlar */}
+    <div className="d-flex gap-2 align-items-center ms-auto">
+      {user ? (
+        <>
+          <span className="fw-bold d-none d-md-block">
+            Hello, {user?.user?.name || user?.name || "User"}
+          </span>
+
+          <Link
+            to="/myorders"
+            className="btn btn-success btn-sm d-flex align-items-center gap-1"
           >
-            <span className="navbar-toggler-icon"></span>
+            <MdBorderColor /> My Orders
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="btn btn-danger btn-sm d-flex align-items-center gap-1"
+          >
+            <MdLogout /> Logout
           </button>
+        </>
+      ) : (
+        <Link
+          to="/login"
+          className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
+        >
+          <FaUser /> Login
+        </Link>
+      )}
+    </div>
+  </div>
+</nav>
 
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-3">
-              <li className="nav-item">
-                <Link to="/about" className="nav-link fw-bold">
-                  About Us
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/contact" className="nav-link fw-bold">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Sağ tarafta butonlar (her zaman görünür) */}
-          <div className="d-flex gap-2 align-items-center ms-auto">
-            {user ? (
-              <>
-                <span className="fw-bold d-none d-md-block">
-                  Hello, {user?.user?.name || user?.name || "User"}
-                </span>
-
-                <Link
-                  to="/myorders"
-                  className="btn btn-success btn-sm d-flex align-items-center gap-1"
-                >
-                  <MdBorderColor /> My Orders
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-danger btn-sm d-flex align-items-center gap-1"
-                >
-                  <MdLogout /> Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
-              >
-                <FaUser /> Login
-              </Link>
-            )}
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <div
         className="d-flex flex-column flex-md-row align-items-center justify-content-center text-center"
         style={{
           backgroundColor: "#d1d4ff",
-          minHeight: window.innerWidth < 768 ? "auto" : "20vh",
+          minHeight: window.innerWidth < 768 ? "auto" : "30vh",
           marginTop: "60px",
           padding: "2rem 1rem 3rem",
         }}
