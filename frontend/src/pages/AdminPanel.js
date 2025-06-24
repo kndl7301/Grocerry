@@ -80,12 +80,17 @@ function AdminPanel() {
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const criticalThreshold = 5;
 
-  useEffect(() => {
-    fetch(`${BASE_URL}/api/products/lowstock`)
-      .then((res) => res.json())
-      .then((data) => setLowStockProducts(data))
-      .catch((err) => console.error("Error fetching stock data:", err));
-  }, []);
+useEffect(() => {
+  fetch(`${BASE_URL}/api/products/lowstock`)
+    .then((res) => res.json())
+    .then((data) => {
+      // Stok miktarına göre artan şekilde sırala
+      const sortedData = data.sort((a, b) => a.stock - b.stock);
+      setLowStockProducts(sortedData);
+    })
+    .catch((err) => console.error("Error fetching stock data:", err));
+}, []);
+
 
   useEffect(() => {
     const fetchDashboardData = async () => {
