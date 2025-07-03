@@ -427,15 +427,16 @@ app.post("/api/orders", async (req, res) => {
 
   try {
     const newOrder = new Order({
-      orderid: orderId,
+      orderId: parseInt(orderId), // schema expects Number
       username: userName,
       email,
       phone,
-      orderdate: orderDate,
-      orderamount: orderAmount,
+      orderdate: new Date(orderDate),
+      orderamount: Number(orderAmount),
       address,
       status,
     });
+    
     await newOrder.save();
     res.json({ success: true, message: "Order placed successfully" });
   } catch (err) {
