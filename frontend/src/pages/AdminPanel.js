@@ -80,7 +80,7 @@ function AdminPanel() {
   const [lowStockProducts, setLowStockProducts] = useState([]);
   const criticalThreshold = 5;
 
-<<<<<<< HEAD
+
 useEffect(() => {
   fetch(`${BASE_URL}/api/products/lowstock`)
     .then((res) => res.json())
