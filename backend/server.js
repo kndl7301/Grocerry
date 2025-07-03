@@ -94,21 +94,29 @@ app.use("/api/auth", require("./routes/auth"));
 
 // === Twilio SMS Send Route ===
 app.post("/api/sms/send-code", async (req, res) => {
-  const { phone, code } = req.body;
+  const { email, code } = req.body;
 
   try {
+    const user = await User.findOne({ email });
+    if (!user || !user.phone) {
+      return res.status(400).json({ success: false, error: "Phone number not found for user." });
+    }
+
+    const formattedPhone = `+90${user.phone.replace(/^0+/, "")}`;
+
     await client.messages.create({
       body: `Your verification code is: ${code}`,
       from: twilioPhone,
-      to: "+905446939067",
+      to: formattedPhone,
     });
 
     res.json({ success: true, message: "Code sent successfully!" });
   } catch (err) {
-    console.error(err);
+    console.error("Twilio error:", err);
     res.status(500).json({ success: false, error: "Failed to send code." });
   }
 });
+
 
 // Arama rotası - Ürünleri arar ve arama terimini kaydeder/aritmetik artırır
 app.get("/api/products/search", async (req, res) => {
