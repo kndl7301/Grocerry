@@ -4,17 +4,24 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const { Schema } = mongoose;
+const twilio = require("twilio");
 require("dotenv").config();
 
 const app = express();
-
 app.use(express.json());
+
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://grocerry-1.onrender.com"],
     credentials: true,
   })
 );
+
+// === Twilio Configuration ===
+const accountSid = process.env.TWILIO_ACCOUNT_SID || "YOUR_ACCOUNT_SID";
+const authToken = process.env.TWILIO_AUTH_TOKEN || "YOUR_AUTH_TOKEN";
+const twilioPhone = process.env.TWILIO_PHONE_NUMBER || "+1XXXXXXXXXX";
+const client = twilio(accountSid, authToken);
 
 // === MongoDB Connection ===
 const mongoURI = process.env.MONGO_URI;
@@ -55,7 +62,7 @@ const userSchema = new Schema({
 });
 
 const orderSchema = new Schema({
-  orderid: { type: Number, required: true },
+  orderId: { type: Number, required: true },
   username: { type: String, required: true },
   address: { type: String, required: true },
   phone: { type: String, required: true },
@@ -64,12 +71,12 @@ const orderSchema = new Schema({
   email: { type: String, required: true },
   status: { type: String, required: true },
 });
+
 const SearchQuerySchema = new mongoose.Schema({
   term: { type: String, required: true },
   count: { type: Number, default: 1 },
 });
 
-// === Middleware ===
 // === Models ===
 const Category = mongoose.model("categories", categorySchema);
 const Product = mongoose.model("products", productSchema);
@@ -78,12 +85,30 @@ const User = mongoose.model("users", userSchema);
 const Order = mongoose.model("orders", orderSchema);
 const SearchQuery = mongoose.model("searchqueries", SearchQuerySchema);
 
+// === Routes ===
 app.get("/", (req, res) => {
   res.send("Backend is live ✅");
 });
 
-// === Auth ===
 app.use("/api/auth", require("./routes/auth"));
+
+// === Twilio SMS Send Route ===
+app.post("/api/sms/send-code", async (req, res) => {
+  const { phone, code } = req.body;
+
+  try {
+    await client.messages.create({
+      body: `Your verification code is: ${code}`,
+      from: twilioPhone,
+      to: "+905446939067",
+    });
+
+    res.json({ success: true, message: "Code sent successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Failed to send code." });
+  }
+});
 
 // Arama rotası - Ürünleri arar ve arama terimini kaydeder/aritmetik artırır
 app.get("/api/products/search", async (req, res) => {
@@ -499,4 +524,3 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
-

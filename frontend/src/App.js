@@ -17,6 +17,8 @@ import AboutUs from './pages/AboutUs'
 import AdminRoute from './pages/AdminRoute';
 import SearchResults from './pages/SearchResults';
 import TopSearches from './pages/TopSearches'
+import PaymentPage from './pages/PaymentPage'
+import VerificationPage from './pages/VerificationPage'
 
 
 
@@ -34,7 +36,8 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/TopSearches" element={<TopSearches />} />
-        
+        <Route path="/PaymentPage" element={<PaymentPage />} />
+        <Route path="/VerificationPage" element={<VerificationPage />} />
         <Route path="/category/:categoryName" element={<CategoryPage />} />
 
         {/* Admin sayfalarını koruma altına al */}

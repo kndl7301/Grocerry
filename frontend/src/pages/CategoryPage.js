@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate ,useNavigate } from "react-router-dom";
 import { FaUser, FaShoppingBasket, FaTrash, FaPlus } from "react-icons/fa";
 import { MdLogout, MdBorderColor } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -25,6 +25,7 @@ export default function CategoryPage() {
   const [basketItems, setBasketItems] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const baseURL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
@@ -35,9 +36,7 @@ export default function CategoryPage() {
     };
 
     const fetchProducts = async () => {
-      const res = await fetch(
-        `${baseURL}/api/products?category=${categoryName}`
-      );
+      const res = await fetch(`${baseURL}/api/products?category=${categoryName}`);
       const data = await res.json();
       setProducts(data);
     };
@@ -86,6 +85,11 @@ export default function CategoryPage() {
     );
   };
 
+  const handleEmptyBasket = () => {
+    setBasketItems([]);
+    setShowAlert(false);
+  };
+
   const total = basketItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
@@ -125,7 +129,8 @@ export default function CategoryPage() {
             });
           }
           setShowAlert(true);
-          setTimeout(() => setBasketItems([]), 2500);
+          setTimeout(() => setBasketItems([]), 4500);
+          navigate('/PaymentPage')
         }
       } catch (err) {
         console.error("Payment error:", err);
@@ -163,7 +168,6 @@ export default function CategoryPage() {
                   <MdBorderColor /> My Orders
                 </Link>
                 <Link to="/login" style={{ textDecoration: "none" }}>
-                  {" "}
                   <button
                     onClick={handleLogout}
                     className="btn btn-danger btn-sm d-flex align-items-center gap-1"
@@ -314,7 +318,7 @@ export default function CategoryPage() {
               )}
             </div>
           </div>
-
+         
           {/* Basket */}
           <div className="col-12 col-md-3">
             <h5 className="fw-bold mb-2">Basket</h5>
@@ -385,14 +389,20 @@ export default function CategoryPage() {
                       </div>
                     </div>
                   ))}
-                  <hr />
-                  <p className="fw-bold">Total: ₺{total.toFixed(2)}</p>
+                  <hr />  <p className="fw-bold">Total: ₺{total.toFixed(2)}</p>
+                 <div className="container  text-center">  
+                
                   <button
-                    className="btn btn-primary mt-2"
+                    className="btn btn-primary  "
                     onClick={handleCompletePayment}
                   >
-                    Complete the Payment
-                  </button>
+                   Confirm Basket
+                  </button> <button
+                    className="btn btn-outline-danger  "
+                    onClick={handleEmptyBasket}
+                  >
+                    Empty  Basket 
+                  </button></div>
                   {showAlert && (
                     <div
                       className="alert alert-success alert-dismissible fade show mt-3 w-100"
