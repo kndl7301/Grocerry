@@ -425,8 +425,8 @@ app.get("/api/orders", async (req, res) => {
 
 app.post("/api/orders", async (req, res) => {
   const {
-    orderId,
-    userName,
+    orderId: parseInt(orderId), 
+        userName,
     email,
     phone,
     orderDate,
