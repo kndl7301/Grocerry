@@ -243,29 +243,51 @@ app.post("/api/login", async (req, res) => {
 });
 
 // === Register ===
-app.post("/api/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   try {
     const { name, email, password, phone, address } = req.body;
-    if (!name || !email || !password || !phone || !address)
+
+    // 1. Check for missing fields
+    if (!name || !email || !password || !phone || !address) {
       return res.status(400).json({ message: "All fields are required." });
+    }
 
+    // 2. Validate email format
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Invalid email format." });
+    }
+
+    // 3. Validate phone format: must be 11 digits and start with '05'
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (!/^05\d{9}$/.test(cleanPhone)) {
+      return res.status(400).json({ message: "Phone number must start with 05 and be 11 digits." });
+    }
+
+    // 4. Check if user already exists
     const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email already in use" });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email is already registered." });
+    }
 
+    // 5. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 6. Save new user
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
-      phone,
+      phone: cleanPhone,
       address,
     });
+
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({ success: true, message: "User registered successfully." });
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Registration error:", err);
+    res.status(500).json({ message: "Server error. Please try again later." });
   }
 });
 

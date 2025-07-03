@@ -33,21 +33,43 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const numericPhone = form.phone.replace(/\D/g, '');
     if (!/^05\d{9}$/.test(numericPhone)) {
       setMessage({ type: 'danger', text: 'Phone number must be 11 digits and start with 05.' });
       return;
     }
-
+  
+    if (!form.name || !form.email || !form.password || !form.address) {
+      setMessage({ type: 'danger', text: 'All fields are required.' });
+      return;
+    }
+  
+    if (!/\S+@\S+\.\S+/.test(form.email)) {
+      setMessage({ type: 'danger', text: 'Enter a valid email.' });
+      return;
+    }
+  
     try {
-      await axios.post(`${BASE_URL}/api/register`, { ...form, phone: numericPhone });
+      const sanitizedForm = {
+        ...form,
+        phone: numericPhone,
+        email: form.email.trim(),
+        name: form.name.trim(),
+        address: form.address.trim(),
+      };
+  
+      await axios.post(`${BASE_URL}/api/register`, sanitizedForm);
       setShowSuccessModal(true);
       setForm({ name: '', email: '', password: '', phone: '', address: '' });
+  
+      // Optional: Auto-close success modal
+      setTimeout(() => setShowSuccessModal(false), 3000);
     } catch (err) {
       setMessage({ type: 'danger', text: err.response?.data?.message || 'Registration failed.' });
     }
   };
+  
 
   const generateRandomStyles = () => ({
     position: 'absolute',
