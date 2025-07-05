@@ -59,7 +59,7 @@ export default function Register() {
         address: form.address.trim(),
       };
   
-      await axios.post(`${BASE_URL}/api/register`, sanitizedForm);
+      await axios.post(`${BASE_URL}/register`, sanitizedForm);
       setShowSuccessModal(true);
       setForm({ name: '', email: '', password: '', phone: '', address: '' });
   

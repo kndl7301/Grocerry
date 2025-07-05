@@ -241,7 +241,8 @@ function Orders() {
                         return (
                           <tr key={order._id}>
                             <td>{index + 1}</td>
-                            <td>{order.orderid}</td>
+                            <td>{order.orderId}</td>
+
                             <td>{order.username}</td>
                             <td>{order.email}</td>
                             <td>{order.phone}</td>

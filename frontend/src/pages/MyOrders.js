@@ -53,62 +53,62 @@ const MyOrders = () => {
   return (
     <div style={{ fontFamily: "'Poppins', sans-serif" }}>
       {/* Navbar */}
-      <nav
-  className="navbar fixed-top"
-  style={{ backgroundColor: "#ebe6a0" }}
->
-  <div className="container d-flex flex-wrap justify-content-between align-items-center">
-    <Link to="/home" className="navbar-brand fw-bold fs-3">
-      <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
-    </Link>
-
-    {/* Menü linkleri her zaman görünür */}
-    <ul className="navbar-nav d-flex flex-row gap-3 mb-0">
-      <li className="nav-item">
-        <Link to="/about" className="nav-link fw-bold">
-          About Us
-        </Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/contact" className="nav-link fw-bold">
-          Contact
-        </Link>
-      </li>
-    </ul>
-
-    {/* Sağdaki butonlar */}
-    <div className="d-flex gap-2 align-items-center ms-auto">
-      {user ? (
-        <>
-          <span className="fw-bold d-none d-md-block">
-            Hello, {user?.user?.name || user?.name || "User"}
-          </span>
-
-          <Link
-            to="/myorders"
-            className="btn btn-success btn-sm d-flex align-items-center gap-1"
-          >
-            <MdBorderColor /> My Orders
+      <nav className="navbar fixed-top" style={{ backgroundColor: "#ebe6a0" }}>
+        <div className="container d-flex flex-wrap justify-content-between align-items-center">
+          <Link to="/home" className="navbar-brand fw-bold fs-3">
+            <span style={{ fontSize: "2rem", color: "#4CAF50" }}>G</span>roceryy
           </Link>
 
-          <Link to="/login" style={{textDecoration:'none'}}>   <button
-            onClick={handleLogout}
-            className="btn btn-danger btn-sm d-flex align-items-center gap-1"
-          >
-         <MdLogout /> Logout
-          </button></Link> 
-        </>
-      ) : (
-        <Link
-          to="/login"
-          className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
-        >
-          <FaUser /> Login
-        </Link>
-      )}
-    </div>
-  </div>
-</nav>
+          {/* Menü linkleri her zaman görünür */}
+          <ul className="navbar-nav d-flex flex-row gap-3 mb-0">
+            <li className="nav-item">
+              <Link to="/about" className="nav-link fw-bold">
+                About Us
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/contact" className="nav-link fw-bold">
+                Contact
+              </Link>
+            </li>
+          </ul>
+
+          {/* Sağdaki butonlar */}
+          <div className="d-flex gap-2 align-items-center ms-auto">
+            {user ? (
+              <>
+                <span className="fw-bold d-none d-md-block">
+                  Hello, {user?.user?.name || user?.name || "User"}
+                </span>
+
+                <Link
+                  to="/myorders"
+                  className="btn btn-success btn-sm d-flex align-items-center gap-1"
+                >
+                  <MdBorderColor /> My Orders
+                </Link>
+
+                <Link to="/login" style={{ textDecoration: "none" }}>
+                  {" "}
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-danger btn-sm d-flex align-items-center gap-1"
+                  >
+                    <MdLogout /> Logout
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
+              >
+                <FaUser /> Login
+              </Link>
+            )}
+          </div>
+        </div>
+      </nav>
 
       {/* Page Content */}
       <div className="container" style={{ marginTop: "100px" }}>
@@ -131,7 +131,7 @@ const MyOrders = () => {
               {orders.map((order, index) => (
                 <tr key={order._id}>
                   <td>{index + 1}</td>
-                  <td>{order.orderid}</td>
+                  <td>{order.orderId}</td>
                   <td>{order.orderamount}</td>
                   <td>{new Date(order.orderdate).toLocaleString()}</td>
                   <td>{order.address}</td>

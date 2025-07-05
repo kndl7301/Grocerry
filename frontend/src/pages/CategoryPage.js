@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams, Link, Navigate ,useNavigate } from "react-router-dom";
+import { useParams, Link, Navigate, useNavigate } from "react-router-dom";
 import { FaUser, FaShoppingBasket, FaTrash, FaPlus } from "react-icons/fa";
 import { MdLogout, MdBorderColor } from "react-icons/md";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -36,7 +36,9 @@ export default function CategoryPage() {
     };
 
     const fetchProducts = async () => {
-      const res = await fetch(`${baseURL}/api/products?category=${categoryName}`);
+      const res = await fetch(
+        `${baseURL}/api/products?category=${categoryName}`
+      );
       const data = await res.json();
       setProducts(data);
     };
@@ -104,7 +106,7 @@ export default function CategoryPage() {
     if (basketItems.length && user) {
       try {
         const order = {
-          orderId: Date.now().toString(),
+          orderId: Date.now(),
           userName: user.username || user.name,
           email: user.email,
           phone: user.phone || "000",
@@ -130,7 +132,7 @@ export default function CategoryPage() {
           }
           setShowAlert(true);
           setTimeout(() => setBasketItems([]), 4500);
-          navigate('/PaymentPage')
+          navigate("/PaymentPage");
         }
       } catch (err) {
         console.error("Payment error:", err);
@@ -318,7 +320,7 @@ export default function CategoryPage() {
               )}
             </div>
           </div>
-         
+
           {/* Basket */}
           <div className="col-12 col-md-3">
             <h5 className="fw-bold mb-2">Basket</h5>
@@ -389,20 +391,21 @@ export default function CategoryPage() {
                       </div>
                     </div>
                   ))}
-                  <hr />  <p className="fw-bold">Total: ₺{total.toFixed(2)}</p>
-                 <div className="container  text-center">  
-                
-                  <button
-                    className="btn btn-primary  "
-                    onClick={handleCompletePayment}
-                  >
-                   Confirm Basket
-                  </button> <button
-                    className="btn btn-outline-danger  "
-                    onClick={handleEmptyBasket}
-                  >
-                    Empty  Basket 
-                  </button></div>
+                  <hr /> <p className="fw-bold">Total: ₺{total.toFixed(2)}</p>
+                  <div className="container  text-center">
+                    <button
+                      className="btn btn-primary  "
+                      onClick={handleCompletePayment}
+                    >
+                      Confirm Basket
+                    </button>{" "}
+                    <button
+                      className="btn btn-outline-danger  "
+                      onClick={handleEmptyBasket}
+                    >
+                      Empty Basket
+                    </button>
+                  </div>
                   {showAlert && (
                     <div
                       className="alert alert-success alert-dismissible fade show mt-3 w-100"

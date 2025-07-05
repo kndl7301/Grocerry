@@ -99,7 +99,9 @@ app.post("/api/sms/send-code", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user || !user.phone) {
-      return res.status(400).json({ success: false, error: "Phone number not found for user." });
+      return res
+        .status(400)
+        .json({ success: false, error: "Phone number not found for user." });
     }
 
     const formattedPhone = `+90${user.phone.replace(/^0+/, "")}`;
@@ -116,7 +118,6 @@ app.post("/api/sms/send-code", async (req, res) => {
     res.status(500).json({ success: false, error: "Failed to send code." });
   }
 });
-
 
 // Arama rotası - Ürünleri arar ve arama terimini kaydeder/aritmetik artırır
 app.get("/api/products/search", async (req, res) => {
@@ -261,7 +262,9 @@ app.post("/register", async (req, res) => {
     // 3. Validate phone format: must be 11 digits and start with '05'
     const cleanPhone = phone.replace(/\D/g, "");
     if (!/^05\d{9}$/.test(cleanPhone)) {
-      return res.status(400).json({ message: "Phone number must start with 05 and be 11 digits." });
+      return res
+        .status(400)
+        .json({ message: "Phone number must start with 05 and be 11 digits." });
     }
 
     // 4. Check if user already exists
@@ -284,7 +287,9 @@ app.post("/register", async (req, res) => {
 
     await newUser.save();
 
-    res.status(201).json({ success: true, message: "User registered successfully." });
+    res
+      .status(201)
+      .json({ success: true, message: "User registered successfully." });
   } catch (err) {
     console.error("Registration error:", err);
     res.status(500).json({ message: "Server error. Please try again later." });
@@ -449,7 +454,7 @@ app.post("/api/orders", async (req, res) => {
 
   try {
     const newOrder = new Order({
-      orderId: parseInt(orderId), // schema expects Number
+      orderId: Number(orderId), // schema expects Number
       username: userName,
       email,
       phone,
@@ -458,7 +463,7 @@ app.post("/api/orders", async (req, res) => {
       address,
       status,
     });
-    
+
     await newOrder.save();
     res.json({ success: true, message: "Order placed successfully" });
   } catch (err) {
